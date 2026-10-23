@@ -26,7 +26,7 @@ El panel de control proporciona una vista integral de la situación de la empres
 ![alt text](image-2.png)
 
 ## 🖼️ Vista Previa del Dashboard
-![Vista previa del Dashboard]![alt text](image-1.png)
+![Vista previa del Dashboard](image-1.png)
 
 
 ## 💡 Conclusiones y Hallazgos

@@ -1,0 +1,132 @@
+table M_Menu
+	lineageTag: d784a190-9b53-4ccb-95c6-1b055274e5df
+
+	column item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7454283c-9b14-4387-90b3-cb1b4eb21346
+		summarizeBy: none
+		sourceColumn: item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_name
+		dataType: string
+		lineageTag: 0562d62e-e71b-49d3-ad36-4e92e101680f
+		summarizeBy: none
+		sourceColumn: item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: 5b3a0ab0-a6ea-4203-9b52-0d0a2d5f0afc
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column subcategory
+		dataType: string
+		lineageTag: c8121b97-22a4-458f-a788-397e5ef4680e
+		summarizeBy: none
+		sourceColumn: subcategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column price_usd
+		dataType: double
+		lineageTag: d9b713b7-0782-4a74-b8fd-224e73362b21
+		summarizeBy: sum
+		sourceColumn: price_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column calories
+		dataType: int64
+		formatString: 0
+		lineageTag: e40e2698-7eb2-45e0-a222-cb48c2c36c99
+		summarizeBy: sum
+		sourceColumn: calories
+
+		annotation SummarizationSetBy = Automatic
+
+	column prep_time_min
+		dataType: int64
+		formatString: 0
+		lineageTag: 725908b3-bae2-4a79-be94-1296c2afa88c
+		summarizeBy: sum
+		sourceColumn: prep_time_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_seasonal
+		dataType: string
+		lineageTag: 1297c036-05ba-4c0b-8fe1-eecfe095d577
+		summarizeBy: none
+		sourceColumn: is_seasonal
+
+		annotation SummarizationSetBy = Automatic
+
+	column popularity_score
+		dataType: double
+		lineageTag: 684d1d44-d587-404d-a7c7-48348be3ae01
+		summarizeBy: sum
+		sourceColumn: popularity_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_rating
+		dataType: double
+		lineageTag: 8b4c1864-d821-439d-a0e7-e944d5bb958e
+		summarizeBy: sum
+		sourceColumn: avg_rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column caffeine_mg
+		dataType: double
+		lineageTag: e96a1d06-be2f-4bd3-ba91-78bfd12ee0d8
+		summarizeBy: sum
+		sourceColumn: caffeine_mg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_vegan
+		dataType: string
+		lineageTag: 0bda4ffd-7cea-41b4-b7c7-f86d8bf291dc
+		summarizeBy: none
+		sourceColumn: is_vegan
+
+		annotation SummarizationSetBy = Automatic
+
+	column available
+		dataType: string
+		lineageTag: 3ac43649-6d37-4fde-bfdf-92e607fa2f58
+		summarizeBy: none
+		sourceColumn: available
+
+		annotation SummarizationSetBy = Automatic
+
+	partition M_Menu = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Desktop\BOOTCAMP ANALISIS DE DATOS 2026\POWER BI\DATA\Menu_Items.csv"), [Delimiter = ",", Columns = 13, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"item_id", Int64.Type}, {"price_usd", type number}, {"calories", Int64.Type}, {"prep_time_min", Int64.Type}, {"popularity_score", type number}, {"avg_rating", type number}, {"caffeine_mg", type number}})
+				in
+				  #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

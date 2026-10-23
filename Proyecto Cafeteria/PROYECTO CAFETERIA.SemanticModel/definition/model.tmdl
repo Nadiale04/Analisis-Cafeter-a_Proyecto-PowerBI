@@ -1,0 +1,31 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-PE
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["BD_Ordenes","BD_DetalleOrdenes","BD_CusReviews","M_Menu","M_Clientes","M_Empleados","M_Sucursal","Medidas"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table M_Menu
+ref table M_Clientes
+ref table BD_CusReviews
+ref table BD_Ordenes
+ref table DateTableTemplate_fbbf5fda-2127-46b7-ac6c-65136e3b1c76
+ref table LocalDateTable_3ae9d856-0e84-48ee-9b81-e04757b46304
+ref table Calendario
+ref table LocalDateTable_57fbb959-56e0-4d1a-ab3d-c8e8ddf64127
+ref table M_Sucursal
+ref table BD_DetalleOrdenes
+ref table Medidas
+ref table M_Empleados
+ref table LocalDateTable_981d4e26-e991-4cde-a027-e194949b3c12
+
+ref cultureInfo es-ES
+

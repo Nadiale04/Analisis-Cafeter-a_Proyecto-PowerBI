@@ -1,0 +1,119 @@
+table BD_CusReviews
+	lineageTag: 0fd2aabe-22bf-46fe-ad78-d4e23fb4c732
+
+	column review_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 93c1cf56-f2d4-4a8f-a34e-55bb98af2ee0
+		summarizeBy: sum
+		sourceColumn: review_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 537bbff9-7c16-471d-bf78-eb4314045f3e
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column branch_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e3ac45e8-4ec6-4e5f-a87f-4cd73ad388e6
+		summarizeBy: none
+		sourceColumn: branch_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_reviewed
+		dataType: string
+		lineageTag: 5b3e7ea1-c7af-477d-a247-39b4889287b1
+		summarizeBy: none
+		sourceColumn: item_reviewed
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3973513b-84c3-40ba-8ce9-384eba8d8f7f
+		summarizeBy: none
+		sourceColumn: review_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column rating
+		dataType: int64
+		formatString: 0
+		lineageTag: 14aaa4ba-d9bd-4c3e-9fdf-993a1bafb677
+		summarizeBy: sum
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_text
+		dataType: string
+		lineageTag: 08bab1e4-4308-493c-b6e9-83a44e4c8ff7
+		summarizeBy: none
+		sourceColumn: review_text
+
+		annotation SummarizationSetBy = Automatic
+
+	column label
+		dataType: string
+		lineageTag: 877bb63c-41fa-43c1-ad66-62bb853e0792
+		summarizeBy: none
+		sourceColumn: label
+
+		annotation SummarizationSetBy = Automatic
+
+	column verified_purchase
+		dataType: string
+		lineageTag: c324a00a-57c7-45a4-8644-3a9b9b5533b2
+		summarizeBy: none
+		sourceColumn: verified_purchase
+
+		annotation SummarizationSetBy = Automatic
+
+	column helpful_votes
+		dataType: double
+		lineageTag: 1ce10a57-7eb5-4f31-95db-eaddedb20c67
+		summarizeBy: sum
+		sourceColumn: helpful_votes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id_item =
+			
+			LOOKUPVALUE(
+			    M_Menu[item_id],
+			    M_Menu[item_name], BD_CusReviews[item_reviewed]
+			)
+		formatString: 0
+		lineageTag: 2b0baf3d-c4ee-4a1d-ac4a-c0bbc1a45d2b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition BD_CusReviews = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Desktop\BOOTCAMP ANALISIS DE DATOS 2026\POWER BI\DATA\Customer_Reviews.csv"), [Delimiter = ",", Columns = 11, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"review_id", Int64.Type}, {"customer_id", Int64.Type}, {"branch_id", Int64.Type}, {"review_date", type date}, {"rating", Int64.Type}, {"helpful_votes", type number}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"response_given"})
+				in
+				  #"Columnas quitadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "cec97102000c25937baa",
+  "position": {
+    "x": 147.42857142857142,
+    "y": 102,
+    "z": 15001,
+    "height": 95.07692307692308,
+    "width": 1356,
+    "tabOrder": 15001
+  },
+  "visual": {
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6855",
+    "query": {
+      "queryState": {
+        "content": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Metricas_Cafeteria_HTML"
+                }
+              },
+              "queryRef": "Medidas.MEEtricas_Cafeteria_HTML",
+              "nativeQueryRef": "Metricas_Cafeteria_HTML"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "compatibility": [
+        {
+          "properties": {
+            "legacyRendering": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d920c6f20489dca8ca33",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "Metricas_Cafeteria_HTML"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

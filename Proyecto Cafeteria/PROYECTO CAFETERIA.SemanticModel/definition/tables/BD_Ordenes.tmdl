@@ -1,0 +1,211 @@
+table BD_Ordenes
+	lineageTag: 678042b3-8853-4924-ad64-227206ab2859
+
+	column order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 11db8ec9-d13a-44d9-a671-f792956607e3
+		summarizeBy: none
+		sourceColumn: order_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b8d974b-0a5c-4026-9d34-0b29541f1ce8
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ec9f0e78-901e-450e-b627-88a317f888e6
+		summarizeBy: none
+		sourceColumn: order_date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_time
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: 2bb6f3bd-5f0d-470f-838e-9f1773fa35a9
+		summarizeBy: none
+		sourceColumn: order_time
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column day_of_week
+		dataType: string
+		lineageTag: 84f3a7f3-fad1-4c0d-b1ef-142a01d97d2d
+		summarizeBy: none
+		sourceColumn: day_of_week
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_method
+		dataType: string
+		lineageTag: a4c8b183-1edb-4461-af30-2483dda8c9be
+		summarizeBy: none
+		sourceColumn: order_method
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column num_items
+		dataType: int64
+		formatString: 0
+		lineageTag: a6c0acb0-526f-48b2-a5ca-d5ae96d4be13
+		summarizeBy: sum
+		sourceColumn: num_items
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column subtotal_usd
+		dataType: double
+		lineageTag: 085fcf8d-30a3-4929-a512-bb2ff1729d27
+		summarizeBy: sum
+		sourceColumn: subtotal_usd
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column discount_usd
+		dataType: double
+		lineageTag: 7569073a-2606-43a2-985c-4e63eefafd05
+		summarizeBy: sum
+		sourceColumn: discount_usd
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tax_usd
+		dataType: double
+		lineageTag: 282e7df1-f067-415c-bf26-7a2ddda71cfa
+		summarizeBy: sum
+		sourceColumn: tax_usd
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_usd
+		dataType: double
+		lineageTag: 95158e31-82e9-475d-ad81-da12b5f7c7eb
+		summarizeBy: sum
+		sourceColumn: total_usd
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_type
+		dataType: string
+		lineageTag: 8ba041aa-655b-4ac3-909c-9c3e8235ffb1
+		summarizeBy: none
+		sourceColumn: payment_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column wait_time_min
+		dataType: double
+		lineageTag: fad85952-c08e-445e-80dc-b6dd4b47ec49
+		summarizeBy: sum
+		sourceColumn: wait_time_min
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column staff_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3558ce0c-62fd-4d3f-9395-66bd214997a5
+		summarizeBy: none
+		sourceColumn: staff_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column branch_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2fa17c7f-982d-45b1-a372-41ed38c9db02
+		summarizeBy: none
+		sourceColumn: branch_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Percent_discount = BD_Ordenes[discount_usd]/BD_Ordenes[subtotal_usd]
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 3cdbffb9-c2aa-4910-a89f-e5441ec8cba4
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Turno
+		dataType: string
+		lineageTag: 676472d5-a4c9-4b26-8955-e2f70fbba791
+		summarizeBy: none
+		sourceColumn: Turno
+
+		annotation SummarizationSetBy = Automatic
+
+	partition BD_Ordenes = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Desktop\BOOTCAMP ANALISIS DE DATOS 2026\POWER BI\DATA\Orders.csv"), [Delimiter = ",", Columns = 16, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"order_id", Int64.Type}, {"customer_id", Int64.Type}, {"order_date", type date}, {"order_time", type time}, {"num_items", Int64.Type}, {"subtotal_usd", type number}, {"discount_usd", type number}, {"tax_usd", type number}, {"total_usd", type number}, {"wait_time_min", type number}, {"staff_id", Int64.Type}, {"branch_id", Int64.Type}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"order_id", "customer_id", "order_date", "order_time", "day_of_week", "order_method", "num_items", "subtotal_usd", "discount_usd", "tax_usd", "total_usd", "payment_type", "wait_time_min", "staff_id", "branch_id"}),
+				    #"Personalizada agregada" = Table.AddColumn(#"Otras columnas quitadas", "Turno", each if Time.Hour([order_time]) >= 6 and Time.Hour([order_time]) < 12 then "Mañana"
+				else if Time.Hour([order_time]) >= 12 and Time.Hour([order_time]) < 18 then "Tarde"
+				else "Noche")
+				in
+				    #"Personalizada agregada"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

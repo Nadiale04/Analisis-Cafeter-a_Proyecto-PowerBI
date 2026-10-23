@@ -1,0 +1,56 @@
+relationship 3e599a75-7be2-4d0c-af8a-a38100464faf
+	joinOnDateBehavior: datePartOnly
+	fromColumn: M_Clientes.join_date
+	toColumn: LocalDateTable_3ae9d856-0e84-48ee-9b81-e04757b46304.Date
+
+relationship b2ce6558-bbe0-45d3-8274-6bb51e3272fc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendario.Fecha
+	toColumn: LocalDateTable_57fbb959-56e0-4d1a-ab3d-c8e8ddf64127.Date
+
+relationship bec23a1d-ceec-f7af-a56a-f24cf201a68e
+	fromColumn: BD_Ordenes.branch_id
+	toColumn: M_Sucursal.branch_id
+
+relationship 75b496ca-d06b-316d-8ddb-7cb9a7bad4f1
+	fromColumn: BD_Ordenes.customer_id
+	toColumn: M_Clientes.customer_id
+
+relationship 192964bc-d6ee-3c5d-878e-a1abb29e9a73
+	fromColumn: BD_CusReviews.branch_id
+	toColumn: M_Sucursal.branch_id
+
+relationship 58de0106-695e-ddeb-2be8-5e2bd31d3e8f
+	fromColumn: BD_CusReviews.customer_id
+	toColumn: M_Clientes.customer_id
+
+relationship 2ba10b27-f559-0d69-96ec-33b9ccc2847d
+	fromColumn: BD_Ordenes.order_date
+	toColumn: Calendario.Fecha
+
+relationship 95833429-bfa0-b43f-a01f-76b5da203d5e
+	fromColumn: BD_CusReviews.review_date
+	toColumn: Calendario.Fecha
+
+relationship f2652065-ae44-0dff-38e7-7d8a295005be
+	fromColumn: BD_DetalleOrdenes.item_id
+	toColumn: M_Menu.item_id
+
+relationship d869659c-8739-ee7d-6d53-4021e2d35f50
+	fromColumn: BD_CusReviews.id_item
+	toColumn: M_Menu.item_id
+
+relationship 9bbf6c36-beb9-4df4-85f9-a9ae5ccec942
+	joinOnDateBehavior: datePartOnly
+	fromColumn: M_Empleados.hire_date
+	toColumn: LocalDateTable_981d4e26-e991-4cde-a027-e194949b3c12.Date
+
+relationship 9a1f2343-915d-b711-49ba-7e29ddb7066f
+	fromColumn: BD_Ordenes.staff_id
+	toColumn: M_Empleados.staff_id
+
+relationship 4ae5a256-2337-6bde-550a-cf004ce45d04
+	crossFilteringBehavior: bothDirections
+	fromColumn: BD_DetalleOrdenes.order_id
+	toColumn: BD_Ordenes.order_id
+

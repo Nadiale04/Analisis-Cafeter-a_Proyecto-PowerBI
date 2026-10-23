@@ -1,0 +1,43 @@
+table M_Sucursal
+	lineageTag: b63a09ea-cf1d-4fb1-a5db-3baca4256f70
+
+	column branch_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c2b3a9c0-2cae-49da-9aba-019bde85a776
+		summarizeBy: none
+		sourceColumn: branch_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column branch_name
+		dataType: string
+		lineageTag: e3f5ec4c-5cc5-4115-9667-0f924ecaba5c
+		summarizeBy: none
+		sourceColumn: branch_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition M_Sucursal = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Desktop\BOOTCAMP ANALISIS DE DATOS 2026\POWER BI\DATA\Staff_Performance.csv"), [Delimiter = ",", Columns = 16, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"staff_id", Int64.Type}, {"branch_id", Int64.Type}, {"hire_date", type date}, {"hours_per_week", type number}, {"monthly_salary_usd", type number}, {"orders_handled", Int64.Type}, {"sales_generated_usd", type number}, {"avg_order_time_min", type number}, {"customer_rating", type number}, {"upsell_rate_pct", type number}, {"late_days", Int64.Type}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"branch_id"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Otras columnas quitadas"),
+				    #"Personalizada agregada" = Table.AddColumn(#"Duplicados quitados", "branch_name", each if [branch_id] = 1 then "Bali Flagship"
+				else if [branch_id] = 2 then "Bandung Hub"
+				else if [branch_id] = 3 then "Jakarta Central"
+				else if [branch_id] = 4 then "Semarang"
+				else if [branch_id] = 5 then "Surabaya East"
+				else "Sin Clasificar"),
+				    #"Filas ordenadas" = Table.Sort(#"Personalizada agregada",{{"branch_id", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

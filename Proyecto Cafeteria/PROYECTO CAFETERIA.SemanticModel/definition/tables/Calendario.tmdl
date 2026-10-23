@@ -1,0 +1,75 @@
+table Calendario
+	lineageTag: f50dfeaf-c8ac-413a-a5d2-15e2639dc06b
+
+	column Fecha
+		formatString: General Date
+		lineageTag: 2200dca4-9f7e-4ce6-91a0-5724e475f17c
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		variation Variación
+			isDefault
+			relationship: b2ce6558-bbe0-45d3-8274-6bb51e3272fc
+			defaultHierarchy: LocalDateTable_57fbb959-56e0-4d1a-ab3d-c8e8ddf64127.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		formatString: 0
+		lineageTag: d4d05f43-fae4-489e-89d9-b27f1981de63
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Día
+		formatString: 0
+		lineageTag: f1f0933e-6994-4f56-9931-b55818f4fca9
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Día]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año
+		formatString: 0
+		lineageTag: 822ad19b-b931-477a-ad8e-d22e505a2a47
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Año]
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes_nom
+		lineageTag: 61564938-5aab-4064-bc99-8815335c73b8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [mes_nom]
+		sortByColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia_nom
+		lineageTag: 536e7ff1-50ce-49cf-9451-d8d3e1866d96
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [dia_nom]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendario = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    CALENDAR(DATE(2023, 1, 1), INT(NOW()) + 460),
+				    "Año", YEAR([Date]),
+				    "Mes", MONTH([Date]),
+				    "Día", DAY([Date]),
+				    "mes_nom", FORMAT([Date], "mmm"),
+				    "dia_nom", FORMAT([Date], "dddd")
+				)
+
+	annotation PBI_Id = aa4be50a83c249f9a5c393c66054cc98
+

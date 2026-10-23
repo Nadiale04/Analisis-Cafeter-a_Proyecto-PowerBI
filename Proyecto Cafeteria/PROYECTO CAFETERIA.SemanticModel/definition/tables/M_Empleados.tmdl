@@ -1,0 +1,134 @@
+table M_Empleados
+	lineageTag: 41eb32dd-bbf4-4d35-837d-4f4055069db4
+
+	column staff_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 15fe705a-cdd7-4ce0-9631-ff36ad9ab7a6
+		summarizeBy: none
+		sourceColumn: staff_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column staff_name
+		dataType: string
+		lineageTag: 7523f315-7f30-4490-b9fe-45f04edf7409
+		summarizeBy: none
+		sourceColumn: staff_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column branch_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b4c4f134-ceae-4443-acc7-acd7bf93da57
+		summarizeBy: sum
+		sourceColumn: branch_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hire_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a4a3629b-6ce8-4b46-9611-1a19446813e7
+		summarizeBy: none
+		sourceColumn: hire_date
+
+		variation Variación
+			isDefault
+			relationship: 9bbf6c36-beb9-4df4-85f9-a9ae5ccec942
+			defaultHierarchy: LocalDateTable_981d4e26-e991-4cde-a027-e194949b3c12.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column shift
+		dataType: string
+		lineageTag: 8953f619-e1b5-468b-9b3f-0297ca6d4864
+		summarizeBy: none
+		sourceColumn: shift
+
+		annotation SummarizationSetBy = Automatic
+
+	column hours_per_week
+		dataType: int64
+		formatString: 0
+		lineageTag: 65cc09c7-5e38-48dc-81ef-3556b468c4a3
+		summarizeBy: sum
+		sourceColumn: hours_per_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column monthly_salary_usd
+		dataType: double
+		lineageTag: ec27f48b-16ea-4c70-80e5-38128cbe5965
+		summarizeBy: sum
+		sourceColumn: monthly_salary_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_order_time_min
+		dataType: double
+		lineageTag: e74f9244-83f4-42ba-bdd4-9bba6f0afca7
+		summarizeBy: sum
+		sourceColumn: avg_order_time_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_rating
+		dataType: double
+		lineageTag: bd328be4-5c01-4c6f-961c-4a8d3a48eec9
+		summarizeBy: sum
+		sourceColumn: customer_rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column upsell_rate_pct
+		dataType: double
+		lineageTag: 8f29400e-89ff-4744-af54-8c8988427fa5
+		summarizeBy: sum
+		sourceColumn: upsell_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column late_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 03bb5a17-90af-4819-817f-b82d7106760b
+		summarizeBy: sum
+		sourceColumn: late_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_active
+		dataType: string
+		lineageTag: f49ca93d-cc5b-4959-8cff-9fa4ac83ce4a
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	partition M_Empleados = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Downloads\Dim_Employee.csv"), [Delimiter = ",", Columns = 15, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"staff_id", Int64.Type}, {"branch_id", Int64.Type}, {"hire_date", type date}, {"hours_per_week", Int64.Type}, {"monthly_salary_usd", type number}, {"sales_generated_usd", type number}, {"avg_order_time_min", type number}, {"customer_rating", type number}, {"upsell_rate_pct", type number}, {"late_days", Int64.Type}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"role", "orders_handled", "sales_generated_usd"})
+				in
+				    #"Columnas quitadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

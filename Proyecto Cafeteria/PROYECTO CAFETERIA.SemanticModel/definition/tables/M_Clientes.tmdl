@@ -1,0 +1,139 @@
+table M_Clientes
+	lineageTag: 65c2ca78-db1b-46d8-b031-209d27607dc7
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6869c1b8-dfea-4cc7-80af-7df193c390c5
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column gender
+		dataType: string
+		lineageTag: 8655e96f-7950-412e-895c-da52fc3f93af
+		summarizeBy: none
+		sourceColumn: gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column age
+		dataType: int64
+		formatString: 0
+		lineageTag: 97f5698b-8ddf-4679-a55e-e6434d75fc88
+		summarizeBy: sum
+		sourceColumn: age
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: faf15b8c-3bc3-4492-a287-d7b4a2b8d21d
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column membership_type
+		dataType: string
+		lineageTag: c89a7fcf-b9d0-4ffe-bf36-fca2a1e0541b
+		summarizeBy: none
+		sourceColumn: membership_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column join_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3cdc0b73-4dee-4981-b506-c5881f61c616
+		summarizeBy: none
+		sourceColumn: join_date
+
+		variation Variación
+			isDefault
+			relationship: 3e599a75-7be2-4d0c-af8a-a38100464faf
+			defaultHierarchy: LocalDateTable_3ae9d856-0e84-48ee-9b81-e04757b46304.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column favorite_item
+		dataType: string
+		lineageTag: 7848383f-e585-40c3-96b0-83709150705d
+		summarizeBy: none
+		sourceColumn: favorite_item
+
+		annotation SummarizationSetBy = Automatic
+
+	column preferred_method
+		dataType: string
+		lineageTag: 443d4c7e-7393-4b02-8b12-166d0154f441
+		summarizeBy: none
+		sourceColumn: preferred_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column loyalty_points
+		dataType: double
+		lineageTag: da83c4c9-595f-4f32-8c9d-d1853d89f746
+		summarizeBy: sum
+		sourceColumn: loyalty_points
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column app_user
+		dataType: string
+		lineageTag: 7211a6b7-8889-4a27-b42f-79dc86a92c86
+		summarizeBy: none
+		sourceColumn: app_user
+
+		annotation SummarizationSetBy = Automatic
+
+	column newsletter_opt_in
+		dataType: string
+		lineageTag: dde1fcb0-cd4d-43f9-a8dc-63754af2b405
+		summarizeBy: none
+		sourceColumn: newsletter_opt_in
+
+		annotation SummarizationSetBy = Automatic
+
+	column complaints_filed
+		dataType: double
+		lineageTag: f93bbafe-7e06-423f-843f-e54ffed357ac
+		summarizeBy: sum
+		sourceColumn: complaints_filed
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_churned
+		dataType: double
+		lineageTag: 614f1769-f65c-4d18-ac49-be68b3461c1b
+		summarizeBy: sum
+		sourceColumn: is_churned
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition M_Clientes = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Desktop\BOOTCAMP ANALISIS DE DATOS 2026\POWER BI\DATA\Customer_Profiles.csv"), [Delimiter = ",", Columns = 16, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"customer_id", Int64.Type}, {"age", Int64.Type}, {"join_date", type date}, {"total_visits", Int64.Type}, {"avg_spend_per_visit", type number}, {"total_spend_usd", type number}, {"loyalty_points", type number}, {"complaints_filed", type number}, {"is_churned", type number}}),
+				    #"Duplicados quitados" = Table.Distinct(#"Tipo cambiado", {"customer_id"}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Duplicados quitados",{"avg_spend_per_visit", "total_visits", "total_spend_usd"})
+				in
+				  #"Columnas quitadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

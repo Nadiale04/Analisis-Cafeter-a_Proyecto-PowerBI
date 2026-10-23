@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "PROYECTO CAFETERIA"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ed649cb8-c19d-42c4-aee6-bf5469dc2375"
+  }
+}

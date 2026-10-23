@@ -1,0 +1,67 @@
+table BD_DetalleOrdenes
+	lineageTag: 23437b68-89fc-483e-a0ce-efbd73e9af4e
+
+	column order_id
+		dataType: string
+		lineageTag: cabf8daa-fc7c-4f46-bc54-99bd355540c5
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_name
+		dataType: string
+		lineageTag: a5b3ee53-cef3-4d81-839e-85e3ae3adda3
+		summarizeBy: none
+		sourceColumn: item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5ac54304-75b7-401c-ac2a-741c916b1989
+		summarizeBy: none
+		sourceColumn: item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column price_usd
+		dataType: double
+		lineageTag: dfa841a3-2b21-4b0b-8abf-528f6c969a58
+		summarizeBy: sum
+		sourceColumn: price_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Precio_venta = BD_DetalleOrdenes[price_usd] * (1 - RELATED(BD_Ordenes[Percent_discount]))
+		formatString: 0.00
+		lineageTag: db3b8995-6f47-4580-aa48-d1a0c9c1ff40
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition BD_DetalleOrdenes = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\N\Desktop\BOOTCAMP ANALISIS DE DATOS 2026\POWER BI\DATA\Orders.csv"), [Delimiter = ",", Columns = 16, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos",{"order_id", "items_ordered"}),
+				    #"Dividir columna por delimitador" = Table.SplitColumn(#"Otras columnas quitadas", "items_ordered", Splitter.SplitTextByDelimiter(",", QuoteStyle.Csv), {"items_ordered.1", "items_ordered.2", "items_ordered.3", "items_ordered.4", "items_ordered.5"}),
+				    #"Columna de anulación de dinamización" = Table.UnpivotOtherColumns(#"Dividir columna por delimitador", {"order_id"}, "Atributo", "Valor"),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Columna de anulación de dinamización",{"Atributo"}),
+				    #"Texto recortado" = Table.TransformColumns(#"Columnas quitadas",{{"Valor", Text.Trim, type text}}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Texto recortado",{{"Valor", "item_name"}}),
+				    #"Consultas combinadas" = Table.NestedJoin(#"Columnas con nombre cambiado", {"item_name"}, M_Menu, {"item_name"}, "M_Menu", JoinKind.LeftOuter),
+				    #"Se expandió M_Menu" = Table.ExpandTableColumn(#"Consultas combinadas", "M_Menu", {"item_id", "price_usd"}, {"M_Menu.item_id", "M_Menu.price_usd"}),
+				    #"Columnas con nombre cambiado1" = Table.RenameColumns(#"Se expandió M_Menu",{{"M_Menu.item_id", "item_id"}, {"M_Menu.price_usd", "price_usd"}})
+				in
+				    #"Columnas con nombre cambiado1"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
